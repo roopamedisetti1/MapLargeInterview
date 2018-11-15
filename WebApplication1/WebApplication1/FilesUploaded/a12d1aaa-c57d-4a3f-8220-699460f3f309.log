@@ -1,0 +1,13 @@
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:32:14.027Z]: #= VoiceClient: ============================Startup============================
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:32:14.029Z]: #= VoiceClient: State -> INITIALISED
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:32:46.279Z]: #= VoiceClient: + Found render device Speakers / Headphones (Realtek High Definition Audio)
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:32:46.279Z]: #= VoiceClient: + Found render device Default System Device
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:32:46.279Z]: #= VoiceClient: + Found render device No Device
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:32:46.279Z]: #= VoiceClient: + Render device changed from Unknown -> Speakers / Headphones (Realtek High Definition Audio)
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:32:46.382Z]: #= VoiceClient: + Found capture device Microphone (Realtek High Definition Audio)
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:32:46.383Z]: #= VoiceClient: + Found capture device Default System Device
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:32:46.383Z]: #= VoiceClient: + Found capture device No Device
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:32:46.383Z]: #= VoiceClient: + Capture device changed from Unknown -> Microphone (Realtek High Definition Audio)
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:33:42.825Z]: #= VoiceClient: ============================Shutdown============================
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:33:42.928Z]: #= VoiceClient: ==========================On App Exit============================
+[9700] [NRM] [Game] [External(0)] [External()] [2017-09-30T17:33:42.928Z]: #= VoiceClient: State -> UNINITIALISED

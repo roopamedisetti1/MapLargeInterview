@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+    <script src="../Scripts/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            console.log("ready!");
+
+            $(document).ajaxStart(function () {
+                $("#wait").css("display", "block");
+            });
+            $(document).ajaxComplete(function () {
+                $("#wait").css("display", "none");
+            });
+
+            var folderList = $("#folderList");
+
+
+            //Step 1: Initiliaze data object
+            var MasterObj = {
+
+
+                init: function () {
+                    this.listenerEvents();
+                    this.grabData();
+                    this.onClickListItem();
+
+                    this.downloadItem();
+                },
+
+                listenerEvents: function () {
+
+                    //for later
+
+                },
+
+                grabData: function () {
+                    console.log('grabData firing');
+
+                    //Initial Data Grab
+                    $.getJSON('api/values', function (data) {
+                        $.each(data, function (key, val) {
+                            var row = ('<li class="activeLink" data-link=' + val + '><a href="#">' + val + '</a></li>');
+                            $("#dirList").append(row);
+                        });
+                    });
+
+                },
+
+                onClickListItem: function () {
+
+                    $(document).on("click", "li.activeLink", function () {
+                        let dataAttr = $(this).data("link");
+
+                        folderList.html("");
+
+                        $.getJSON('api/values?directoryName=' + dataAttr + '/', function (data) {
+
+                            folderList.html("");
+
+
+
+                            if (data == null) //if empty
+                            {
+                                $("#folderList").append("I cant fetch files from \"" + dataAttr + "\" as the files/folders are not accessible or they are no files/folders in this directory");
+                            }
+                            else {
+
+                                $("#folderList").append("The Files count for \"" + dataAttr + "\" => <bold>" + data.length + " <bold><br><br>");
+
+                                $.each(data, function (key, val) {
+
+                                    var fields = val.split('=>');
+
+                                    var valHref = fields[0];
+
+                                    //var row = ('<li class="activeLinkA" data-link=' + valHref + '><a href="#">' + val + '</a></li>');
+                                    var row = ('<li><a href=\"' + valHref + '\" download>' + val + '</a></li><br>');
+                                    $("#folderList").append(row);
+
+
+                                });
+
+
+                            }//else data > 0                           
+
+
+                        });
+
+                    });
+
+                },
+
+                downloadItem: function () {
+
+                 //   $(document).on("click", "li.activeLinkA", function (event) {
+                     //   e.preventDefault();
+                     //   let dataAttr = $(this).data("link");
+                      //  window.location = dataAttr;
+                   // });
+
+                    $('a').click(function (e) {
+                        e.preventDefault();
+                       var link = $(this).attr('href');
+                        window.location.href = link;
+                    });
+
+                }
+
+
+
+            };
+
+            //Initialize object
+            MasterObj.init();
+
+        });
+
+
+
+
+
+        $(function () {
+            $('#btndownload').click(function () {
+                debugger;
+
+                if ($('#downloadfile').val() == '') {
+                    alert('Please enter the file along with the path to be downloaded');
+                    return;
+                }
+
+
+                var filename = $('#downloadfile').val();
+                //  formdata.append('file', file.files[0]);
+
+                $.ajax({
+                    url: '/api/values/Downloadfile?filePath=' + filename,
+                    type: 'POST',
+                    data: filename,
+                    contentType: false,
+                    processData: false,
+                    success: function (d) {
+                        console.log("Yes the file is downloaded");
+                        $('#downloadpanelFile').addClass('alert-success').html('<strong>Success!</strong><a href="' + d + '">Open File</a>').show();
+                    },
+                    error: function () {
+                        $('#downloadpanelFile').addClass('alert_error').html('<strong>Failed!</strong> Error in upload');
+                    }
+                })
+            });
+        });
+
+
+     
+
+
+
+        $(function () {
+            $('#btnupload').click(function () {
+                debugger;
+
+                if ($('#fileupload').val() == '') {
+                    alert('Plase select file');
+                    return;
+                }
+
+                var formdata = new FormData();
+                var file = $('#fileupload')[0];
+                formdata.append('file', file.files[0]);
+
+                $.ajax({
+                    url: '/api/values/UploadFile',
+                    type: 'POST',
+                    data: formdata,
+                    contentType: false,
+                    processData: false,
+                    success: function (d) {
+                        $('#updatepanelFile').addClass('alert-success').html('<strong>Success!</strong><a href="' + d + '">Open File</a>').show();
+                    },
+                    error: function () {
+                        $('#updatepanelFile').addClass('alert_error').html('<strong>Failed!</strong> Error in upload');
+                    }
+                })
+            });
+        });
+
+
+    </script>
+
+
+    <div id="wait" style="display:none;width:69px;height:89px;border:1px solid black;position:absolute;top:50%;left:50%;padding:2px;">
+        <img src='../Scripts/ajax-loader.gif' width="64" height="64" />
+        <br>Loading..
+    </div>
+
+    <div>
+        <h2>Directories list</h2>
+
+        <ul id="dirList" />
+    </div>
+
+    <hr />
+
+    <div style="height:500px;width:1400px;border:1px solid #ccc;overflow:auto;">
+        <h2>All Folders for chosen directory</h2>
+
+        <ul id="folderList" />
+    </div>
+
+
+    <hr />
+
+    <h2> Upload the file </h2>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div class="form-group">
+
+                <div id="updatepanelFile" class="alert" role="alert" style="display:none"> </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <input type="file" id="fileupload" /><br />
+
+                <input type="button" value="Upload File" id="btnupload" class="btn btn-default" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr />
+
+    <h2> Download a File</h2>
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="form-group">
+
+                <div id="downloadpanelFile" class="alert" role="alert" style="display:none"> </div>
+
+            </div>
+
+            <div class="form-group">
+                Enter the file to be downloaded <input type="text" id="downloadfile" />
+
+                <input type="button" value="Download File" id="btndownload" class="btn btn-default" />
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
