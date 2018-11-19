@@ -113,7 +113,7 @@ namespace Interview2.Controllers
                       result = Request.CreateResponse(HttpStatusCode.OK);
                       result.Content = new StreamContent(new FileStream(filePath, FileMode.Open, FileAccess.Read));
                      result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-                     result.Content.Headers.ContentDisposition.FileName = "MarLargeInterview";
+                     result.Content.Headers.ContentDisposition.FileName = "Practice";
                      result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
 
                 }
